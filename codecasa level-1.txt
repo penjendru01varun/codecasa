@@ -1,0 +1,123 @@
+#include <iostream>
+#include <iomanip>
+#include <vector>
+#include <string>
+using namespace std;
+class Student {
+public:
+    string name;
+    int rollNumber;
+    float marks;
+    void inputStudentDetails() {
+        cout << "Enter student name: ";
+         cin>>name;
+         cout << "Enter roll number: ";
+         cin >> rollNumber;
+        cout << "Enter marks: ";
+        cin >> marks;
+        cin.ignore();
+    }
+
+    void displayStudentDetails() const {
+        cout << "Name: " << name << endl;
+        cout << "Roll Number: " << rollNumber << endl;
+        cout << "Marks: " << marks << endl;
+    }
+
+    void modifyStudentDetails() {
+        cout << "Enter new student name: ";
+        getline(cin, name);
+
+        cout << "Enter new marks: ";
+        cin >> marks;
+        cin.ignore();
+    }
+};
+
+class StudentManagementSystem {
+private:
+    vector<Student> students;
+
+public:
+    void addStudent() {
+        Student newStudent;
+        newStudent.inputStudentDetails();
+        students.push_back(newStudent);
+        cout << "Student added successfully!\n";
+    }
+
+    void displayAllStudents() const {
+        if (students.empty()) {
+            cout << "No students available.\n";
+            return;
+        }
+
+        cout << "------ All Students ------\n";
+        for (const Student& student : students) {
+            student.displayStudentDetails();
+            cout << "--------------------------\n";
+        }
+    }
+
+    void modifyStudent() {
+        if (students.empty()) {
+            cout << "No students available.\n";
+            return;
+        }
+
+        int roll;
+        cout << "Enter the roll number of the student to modify: ";
+        cin >> roll;
+
+    cin.ignore();
+
+        bool found = false;
+        for (Student& student : students) {
+            if (student.rollNumber == roll) {
+                student.modifyStudentDetails();
+                cout << "Student details modified successfully!\n";
+                found = true;
+                break;
+            }
+        }
+
+        if (!found) {
+            cout << "Student with roll number " << roll << " not found.\n";
+        }
+    }
+};
+
+int main() {
+    StudentManagementSystem sms;
+    int choice;
+
+    do {
+        cout << "------ Student Management System ------\n";
+        cout << "1. Add Student\n";
+        cout << "2. Display All Students\n";
+        cout << "3. Modify Student Details\n";
+        cout << "4. Exit\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+        cin.ignore();
+
+        switch (choice) {
+            case 1:
+                sms.addStudent();
+                break;
+            case 2:
+                sms.displayAllStudents();
+                break;
+            case 3:
+                sms.modifyStudent();
+                break;
+            case 4:
+                cout << "Exiting the program. Goodbye!\n";
+                break;
+            default:
+                cout << "Invalid choice. Please try again.\n";
+        }
+    } while (choice != 4);
+
+    return 0;
+}
